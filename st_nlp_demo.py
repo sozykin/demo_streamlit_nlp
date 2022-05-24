@@ -3,7 +3,7 @@ import streamlit as st
 from transformers import pipeline
 
 def create_generator():
-    generator = pipeline('text-generation', model="sberbank-ai/mGPT" )
+    generator = pipeline("text-classification", model="SkolkovoInstitute/russian_toxicity_classifier")
     return generator
 
 
@@ -13,5 +13,5 @@ text = st.text_input('Введите текст', 'Зашли как-то в Х�
 result = st.button('Продолжить текст')
 
 if result:
-    new_text = generator(text, max_length = 50)
-    st.write(new_text[0]['generated_text'])
+    sent = generator(text)
+    st.write(sent)
