@@ -2,16 +2,20 @@ import io
 import streamlit as st
 from transformers import pipeline
 
-def create_generator():
-    generator = pipeline("text-classification", model="SkolkovoInstitute/russian_toxicity_classifier")
-    return generator
+def create_model():
+    model = pipeline("text-classification", model="SkolkovoInstitute/russian_toxicity_classifier")
+    return model
 
 
-generator = create_generator()
-st.title('Уменьшенная копия системы Балабола от Яндекс')
-text = st.text_input('Введите текст', 'Зашли как-то в Хабр программист на С++, инженер и разработчик веб-сайтов')
-result = st.button('Продолжить текст')
+model = create_model()
+st.title('Определение токсичности текста')
+text = st.text_input('Введите текст', 'Мамкин кубер-докер смузихлеб')
+result = st.button('Определить токсичность')
 
 if result:
-    sent = generator(text)
-    st.write(sent)
+    res = model(text)
+    sent = res[0]['label']
+    if sent == 'toxic':
+        st.write('Текст токсичный')
+    else:
+        st.write('Текст нейтральный')
